@@ -1,9 +1,17 @@
 spring:
-    jpa:
-        hibernate:
-            ddl-auto: update
     datasource:
-        url: jdbc:mysql://localhost:3306/event
+        url: jdbc:mysql://localhost:3306/event?useSSL=false&serverTimezone=UTC
+        driver-class-name: com.mysql.cj.jdbc.Driver
         username: root
         password:
-        driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+        show-sql: false
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQL8Dialect
+                format_sql: true
+
+jwt:
+    secretKey: aHR0cHM6Ly93d3cuZXhhbXBsZS5jb20vbXktc2VjcmV0LWtleS1mb3ItaG1hYy1zaGEyNTY=
