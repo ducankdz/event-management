@@ -1,6 +1,7 @@
 package com.ptit.event.controllers;
 
 import com.ptit.event.dtos.EventDto;
+import com.ptit.event.dtos.GuestDto;
 import com.ptit.event.entities.enums.EventState;
 import com.ptit.event.entities.models.Event;
 import com.ptit.event.entities.values.EventFilter;
@@ -27,7 +28,7 @@ public class EventController {
   @PutMapping("/{id}")
   public ResponseEntity<Event> update(
       @RequestHeader(name = "user-id") Long userId,
-      @PathVariable(name = "eventId") Long id,
+      @PathVariable(name = "id") Long id,
       @Valid EventDto dto) {
     dto.setUpdatedUserId(userId);
     return new ResponseEntity<>(eventService.update(id, dto), HttpStatus.OK);
@@ -53,5 +54,11 @@ public class EventController {
   @GetMapping
   public Page<Event> filter(@RequestBody EventFilter filter, Pageable pageable) {
     return eventService.filter(filter, pageable);
+  }
+
+  @PostMapping("/{id}/add_guest")
+  public ResponseEntity<?> addGuest(@PathVariable(name = "id") Long id, @Valid GuestDto dto) {
+    eventService.addGuest(id, dto.getEmails());
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 }
