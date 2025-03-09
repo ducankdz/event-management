@@ -6,6 +6,7 @@ import com.ptit.event.responses.AuthResponse;
 import com.ptit.event.responses.UserResponse;
 import com.ptit.event.services.auth.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.Fetch;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
