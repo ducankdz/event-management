@@ -9,7 +9,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.type.SqlTypes;
 
 import java.sql.Timestamp;
 import java.util.UUID;
@@ -23,6 +25,7 @@ import java.util.UUID;
 public class Notification {
   @Id @GeneratedValue private UUID id;
 
+  @Enumerated(EnumType.STRING)
   @Column(name = "type")
   private NotificationType type;
 
@@ -34,7 +37,7 @@ public class Notification {
   @Column(name = "code")
   private NotificationCode code;
 
-  @Column(name = "userId")
+  @Column(name = "user_id")
   private Long userId;
 
   @ManyToOne
@@ -47,6 +50,7 @@ public class Notification {
   @Column(name = "content")
   private String content;
 
+  @JdbcTypeCode(SqlTypes.JSON)
   @Column(name = "data")
   private Object data;
 

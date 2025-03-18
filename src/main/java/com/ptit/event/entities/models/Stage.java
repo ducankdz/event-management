@@ -16,11 +16,11 @@ public class Stage {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "evnt_id")
+  @Column(name = "event_id")
   private Long eventId;
 
   @ManyToOne
-  @Column(name = "event_id", insertable = false, updatable = false)
+  @JoinColumn(name = "event_id", insertable = false, updatable = false)
   private Event event;
 
   @Column(name = "created_user_id")

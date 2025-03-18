@@ -15,7 +15,7 @@ import java.util.UUID;
 public interface NotificationRepository extends JpaRepository<Notification, UUID> {
 
   @Modifying
-  @Query(nativeQuery = false, value = "update from Notification set read = true where id in :ids")
+  @Query(nativeQuery = false, value = "update Notification set read = true where id in :ids")
   void markIsRead(List<UUID> ids);
 
   @Query(

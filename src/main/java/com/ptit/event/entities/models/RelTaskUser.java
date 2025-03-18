@@ -9,22 +9,22 @@ import lombok.NoArgsConstructor;
 @Table(name = "rel_task_user")
 @NoArgsConstructor
 public class RelTaskUser {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(name = "task_id")
-    @ManyToOne()
-    private Task task;
+  @JoinColumn(name = "task_id")
+  @ManyToOne()
+  private Task task;
 
-    @Column(name = "task_id", insertable = false, updatable = false)
-    private Long taskId;
+  @Column(name = "task_id", insertable = false, updatable = false)
+  private Long taskId;
 
-    @Column(name = "user_id")
-    private Long userId;
+  @Column(name = "user_id")
+  private Long userId;
 
-    public RelTaskUser(Task task, Long userId) {
-        this.task = task;
-        this.userId = userId;
-    }
+  public RelTaskUser(Task task, Long userId) {
+    this.task = task;
+    this.userId = userId;
+  }
 }

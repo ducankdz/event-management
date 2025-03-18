@@ -33,7 +33,7 @@ public class Task {
   private Long stageId;
 
   @ManyToOne
-  @Column(name = "stage_id")
+  @JoinColumn(name = "stage_id", insertable = false, updatable = false)
   private Stage stage;
 
   @Column(name = "name")

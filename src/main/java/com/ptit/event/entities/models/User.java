@@ -21,27 +21,32 @@ import java.util.stream.Collectors;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  Long id;
 
-    String email;
-    String password;
-    String fullName;
-    String avatar;
-    LocalDateTime createdAt;
+  String email;
+  String password;
+  String fullName;
+  String avatar;
+  Timestamp createdAt;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    Set<Role> roles;
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(
+      name = "user_roles",
+      joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "role_id"))
+  Set<Role> roles;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
-                .collect(Collectors.toSet());
-    }
-    @Override
-    public String getUsername() {
-        return this.email;
-    }
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return roles.stream()
+        .map(role -> new SimpleGrantedAuthority(role.getName().name()))
+        .collect(Collectors.toSet());
+  }
+
+  @Override
+  public String getUsername() {
+    return this.email;
+  }
 }
