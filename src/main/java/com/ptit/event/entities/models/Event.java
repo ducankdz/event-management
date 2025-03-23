@@ -6,8 +6,6 @@ import com.ptit.event.entities.values.Schedule;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.*;
 import org.hibernate.type.SqlTypes;
 

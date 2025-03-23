@@ -93,3 +93,10 @@ CREATE TABLE task
     created_at      TIMESTAMP,
     updated_at      TIMESTAMP
 );
+
+CREATE TABLE rel_event_user
+(
+    id       BIGINT PRIMARY KEY,
+    user_id  BIGINT,
+    event_id BIGINT
+);
