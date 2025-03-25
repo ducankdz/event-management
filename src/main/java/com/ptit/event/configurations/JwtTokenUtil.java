@@ -55,6 +55,17 @@ public class JwtTokenUtil {
         }
         return extractClaims(jwt).get("email").toString();
     }
+
+    public <T> T getClaimFromToken(String jwt, String key, Class<T> clazz) {
+        if (jwt != null && jwt.startsWith("Bearer ")) {
+            jwt = jwt.substring(7);
+        }
+
+        Object claim = extractClaims(jwt).get(key);
+
+        return clazz.cast(claim);
+    }
+
     public boolean validateToken(String jwt, UserDetails userDetails) {
         try {
             String email = getEmailFromToken(jwt);

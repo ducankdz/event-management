@@ -8,10 +8,7 @@ import com.ptit.event.services.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -49,6 +46,18 @@ public class AuthController {
                             .build(),
                     HttpStatus.OK
             );
+        }
+    }
+    @PostMapping("/otp/verify")
+    public ResponseEntity<?> verifyOtp(@RequestParam String email,
+                                       @RequestParam String otp){
+        try {
+            User user = authService.verifyOtp(email, otp);
+            UserResponse userResponse = UserResponse.fromUser(user);
+            return ResponseEntity.ok(userResponse);
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

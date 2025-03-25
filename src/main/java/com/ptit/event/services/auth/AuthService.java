@@ -6,4 +6,5 @@ import com.ptit.event.entities.models.User;
 public interface AuthService {
     User register(AuthDTO authDTO) throws Exception;
     String login(AuthDTO authDTO) throws Exception;
+    User verifyOtp(String email, String otp);
 }

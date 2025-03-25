@@ -34,6 +34,10 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     Set<Role> roles;
 
+    boolean isVerified;
+    String otp;
+    LocalDateTime otpExpiration;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
