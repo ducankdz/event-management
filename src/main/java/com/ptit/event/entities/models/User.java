@@ -30,8 +30,10 @@ public class User implements UserDetails {
   String avatar;
   Timestamp createdAt;
   boolean isVerified;
-  String otp;
-  LocalDateTime otpExpiration;
+
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  Otp otp;
+
 
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(

@@ -2,8 +2,10 @@ package com.ptit.event.services.auth;
 
 import com.ptit.event.configurations.JwtTokenUtil;
 import com.ptit.event.dtos.AuthDTO;
+import com.ptit.event.entities.models.Otp;
 import com.ptit.event.entities.models.Role;
 import com.ptit.event.entities.models.User;
+import com.ptit.event.repositories.OtpRepository;
 import com.ptit.event.repositories.RoleRepository;
 import com.ptit.event.repositories.UserRepository;
 import com.ptit.event.services.CustomUserDetailsServiceImpl;
@@ -31,7 +33,7 @@ public class AuthServiceImpl implements AuthService {
   private final CustomUserDetailsServiceImpl customUserDetailsService;
   private final RoleRepository roleRepository;
   private final EmailService emailService;
-
+  private final OtpRepository otpRepository;
   @Override
   public User register(AuthDTO authDTO) throws Exception {
     String email = authDTO.getEmail();
@@ -51,9 +53,6 @@ public class AuthServiceImpl implements AuthService {
     Set<Role> roles = new HashSet<>();
     roles.add(role);
 
-    String otp = emailService.generateOtp();
-    LocalDateTime otpExpiration = LocalDateTime.now().plusMinutes(2);
-
     User newUser =
         User.builder()
             .email(authDTO.getEmail())
@@ -62,13 +61,20 @@ public class AuthServiceImpl implements AuthService {
             .createdAt(Timestamp.valueOf(LocalDateTime.now()))
             .roles(roles)
             .isVerified(false)
-            .otp(otp)
-            .otpExpiration(otpExpiration)
             .build();
     User savedUser = userRepository.save(newUser);
 
+    String otpCode = emailService.generateOtp();
+    LocalDateTime otpExpiration = LocalDateTime.now().plusMinutes(2);
+    Otp otp = Otp.builder()
+            .otp(otpCode)
+            .expirationTime(Timestamp.valueOf(otpExpiration))
+            .user(savedUser)
+            .build();
+    otpRepository.save(otp);
+
     // Send OTP Mail
-    emailService.sendOtpMail(email, otp);
+    emailService.sendOtpMail(email, otpCode);
 
     return savedUser;
   }
@@ -100,20 +106,26 @@ public class AuthServiceImpl implements AuthService {
   }
 
   @Override
-  public User verifyOtp(String email, String otp) {
-    User user =
-        userRepository
-            .findByEmail(email)
+  public User verifyOtp(String email, String otpCode) {
+    User user = userRepository.findByEmail(email)
             .orElseThrow(() -> new RuntimeException("Cannot find user with email = " + email));
-    if (user.getOtp() == null || user.getOtpExpiration().isBefore(LocalDateTime.now())) {
+
+    Otp otp = otpRepository.findByUser(user)
+            .orElseThrow(() -> new RuntimeException("OTP not found."));
+
+    if (otp.getExpirationTime().before(Timestamp.valueOf(LocalDateTime.now()))) {
       throw new RuntimeException("OTP has expired.");
     }
-    if (!user.getOtp().equals(otp)) {
+    if (!otp.getOtp().equals(otpCode)) {
       throw new RuntimeException("Invalid OTP");
     }
-    user.setOtp(null);
-    user.setOtpExpiration(null);
+
     user.setVerified(true);
-    return userRepository.save(user);
+    userRepository.save(user);
+
+    // Xóa OTP sau khi xác thực thành công
+    otpRepository.delete(otp);
+
+    return user;
   }
 }
