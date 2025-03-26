@@ -4,6 +4,7 @@ import com.ptit.event.entities.enums.Action;
 import com.ptit.event.entities.enums.NotificationCode;
 import com.ptit.event.entities.enums.NotificationType;
 import com.ptit.event.entities.models.Notification;
+import com.ptit.event.entities.models.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -15,6 +16,9 @@ public interface NotificationService {
 
   Notification create(
       Long userId, Action action, NotificationType type, NotificationCode code, Object data);
+
+  void createBatchByUsers(
+      List<User> users, Action action, NotificationType type, NotificationCode code, Object data);
 
   void read(List<UUID> notiIds);
 }

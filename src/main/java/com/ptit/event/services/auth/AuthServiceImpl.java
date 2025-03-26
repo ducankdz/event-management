@@ -62,8 +62,6 @@ public class AuthServiceImpl implements AuthService {
             .createdAt(Timestamp.valueOf(LocalDateTime.now()))
             .roles(roles)
             .isVerified(false)
-            .otp(otp)
-            .otpExpiration(otpExpiration)
             .build();
     User savedUser = userRepository.save(newUser);
 
@@ -105,14 +103,14 @@ public class AuthServiceImpl implements AuthService {
         userRepository
             .findByEmail(email)
             .orElseThrow(() -> new RuntimeException("Cannot find user with email = " + email));
-    if (user.getOtp() == null || user.getOtpExpiration().isBefore(LocalDateTime.now())) {
-      throw new RuntimeException("OTP has expired.");
-    }
-    if (!user.getOtp().equals(otp)) {
-      throw new RuntimeException("Invalid OTP");
-    }
-    user.setOtp(null);
-    user.setOtpExpiration(null);
+    //    if (user.getOtp() == null || user.getOtpExpiration().isBefore(LocalDateTime.now())) {
+    //      throw new RuntimeException("OTP has expired.");
+    //    }
+    //    if (!user.getOtp().equals(otp)) {
+    //      throw new RuntimeException("Invalid OTP");
+    //    }
+    //    user.setOtp(null);
+    //    user.setOtpExpiration(null);
     user.setVerified(true);
     return userRepository.save(user);
   }

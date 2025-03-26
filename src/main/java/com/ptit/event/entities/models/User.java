@@ -30,8 +30,6 @@ public class User implements UserDetails {
   String avatar;
   Timestamp createdAt;
   boolean isVerified;
-  String otp;
-  LocalDateTime otpExpiration;
 
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
