@@ -1,17 +1,16 @@
 package com.ptit.event.entities.models;
 
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "users")
@@ -30,6 +29,9 @@ public class User implements UserDetails {
   String fullName;
   String avatar;
   Timestamp createdAt;
+  boolean isVerified;
+  String otp;
+  LocalDateTime otpExpiration;
 
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
