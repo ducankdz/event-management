@@ -120,6 +120,7 @@ public class AuthServiceImpl implements AuthService {
       throw new RuntimeException("Invalid OTP");
     }
 
+
     user.setVerified(true);
     userRepository.save(user);
 

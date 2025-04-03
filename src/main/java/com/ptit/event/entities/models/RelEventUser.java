@@ -17,6 +17,10 @@ public class RelEventUser {
     @Column(name = "user_id")
     private Long userId;
 
+  @OneToOne
+  @JoinColumn(name = "user_id", insertable = false, updatable = false)
+  private User user;
+
     @Column(name = "event_id")
     private Long eventId;
 

@@ -1,3 +1,5 @@
 package com.ptit.event.entities.enums;
 
-public enum NotificationType {}
+public enum NotificationType {
+  EVENT
+}
