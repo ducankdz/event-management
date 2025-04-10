@@ -1,7 +1,7 @@
 server:
   port: ${PORT:8080}
   servlet:
-    context-path: /iss_365_setting
+    context-path: /event_manager
 
 spring:
   datasource:
@@ -17,7 +17,9 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
-
+  flyway:
+    locations: classpath:db/migration
+    enabled: false
   mail:
     host: smtp.gmail.com
     port: 587
@@ -33,10 +35,9 @@ spring:
 async:
   config:
     core-pool-size: ${ASYNC_CORE_POOL_SIZE:3}
-  
-  
-  flyway:
-    locations: classpath:db/migration
+
+
+
 
 jwt:
   secretKey: aHR0cHM6Ly93d3cuZXhhbXBsZS5jb20vbXktc2VjcmV0LWtleS1mb3ItaG1hYy1zaGEyNTY=
