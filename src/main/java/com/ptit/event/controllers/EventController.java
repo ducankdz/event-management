@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 public class EventController {
   @Autowired private EventService eventService;
 
-  @PreAuthorize("@eventPermissionEvaluator.hasPermission(#eventId, {'event_create'})")
   @PostMapping
   public ResponseEntity<Event> create(
       @PathVariable Long eventId,
@@ -29,6 +28,7 @@ public class EventController {
     return new ResponseEntity<>(eventService.create(dto, userId), HttpStatus.OK);
   }
 
+  @PreAuthorize("@eventPermissionEvaluator.hasPermission(#id, 'EVENT',{'event_update'})")
   @PutMapping("/{id}")
   public ResponseEntity<Event> update(
       @RequestHeader(name = "user-id") Long userId,
@@ -38,12 +38,14 @@ public class EventController {
     return new ResponseEntity<>(eventService.update(id, dto), HttpStatus.OK);
   }
 
+  @PreAuthorize("@eventPermissionEvaluator.hasPermission(#id, 'EVENT',{'event_delete'})")
   @DeleteMapping("/{id}")
   public ResponseEntity<?> delete(@PathVariable(name = "id") Long id) {
     eventService.delete(id);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
+  @PreAuthorize("@eventPermissionEvaluator.hasPermission(#id, 'EVENT',{'event_update'})")
   @PatchMapping("/{id}")
   public ResponseEntity<Event> changeState(
       @PathVariable(name = "id") Long id, @RequestParam EventState state) {
@@ -60,6 +62,7 @@ public class EventController {
     return eventService.filter(filter, pageable);
   }
 
+  @PreAuthorize("@eventPermissionEvaluator.hasPermission(#id, 'EVENT',{'event_update'})")
   @PostMapping("/{id}/add_guest")
   public ResponseEntity<?> addGuest(@PathVariable(name = "id") Long id, @Valid GuestDto dto) {
     eventService.addGuest(id, dto.getEmails());

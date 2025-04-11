@@ -1,5 +1,6 @@
 package com.ptit.event.entities.models;
 
+import com.ptit.event.entities.enums.Type;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,9 +14,11 @@ public class RelUserRole {
 
   private Long userId;
 
-  private Long eventId;
+  private Long objectId;
 
   private Long roleId;
 
   @ManyToOne private Role role;
+
+  private Type type;
 }
