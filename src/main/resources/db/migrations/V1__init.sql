@@ -1,6 +1,6 @@
 CREATE TABLE users
 (
-    id         BIGINT PRIMARY KEY,
+    id         BIGSERIAL PRIMARY KEY,
     email      VARCHAR(255),
     password   VARCHAR(255),
     full_name  VARCHAR(255),
@@ -10,19 +10,20 @@ CREATE TABLE users
 
 CREATE TABLE roles
 (
-    id   BIGINT PRIMARY KEY,
+    id   BIGSERIAL PRIMARY KEY,
     name VARCHAR(255)
 );
 
-CREATE TABLE user_roles
+CREATE TABLE rel_user_role
 (
+    id BIGSERIAL PRIMARY KEY ,
     user_id BIGINT,
     role_id BIGINT
 );
 
 CREATE TABLE event
 (
-    id              BIGINT PRIMARY KEY,
+    id              BIGSERIAL PRIMARY KEY,
     owner_id        BIGINT,
     updated_user_id BIGINT,
     name            VARCHAR(255),
@@ -56,7 +57,7 @@ CREATE TABLE notification
 
 CREATE TABLE rel_task_user
 (
-    id      BIGINT PRIMARY KEY,
+    id      BIGSERIAL PRIMARY KEY,
     task_id BIGINT,
     user_id BIGINT
 );
@@ -79,7 +80,7 @@ CREATE TABLE stage
 
 CREATE TABLE task
 (
-    id              BIGINT PRIMARY KEY,
+    id              BIGSERIAL PRIMARY KEY,
     created_user_id BIGINT,
     updated_user_id BIGINT,
     event_id        BIGINT,
@@ -89,6 +90,7 @@ CREATE TABLE task
     state           VARCHAR(50),
     images          JSON,
     budget          BIGINT,
+    actual_cost     BIGINT,
     is_deleted      BOOLEAN,
     created_at      TIMESTAMP,
     updated_at      TIMESTAMP
@@ -96,7 +98,7 @@ CREATE TABLE task
 
 CREATE TABLE rel_event_user
 (
-    id       BIGINT PRIMARY KEY,
+    id       BIGSERIAL PRIMARY KEY,
     user_id  BIGINT,
     event_id BIGINT
 );
